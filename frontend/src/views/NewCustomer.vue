@@ -31,18 +31,18 @@
     </div>
     <div class="mb-3">
       <label for="zip" class="form-label">Zip</label>
-      <input type="text" class="form-control" id="zip" v-model="zip" @blur="v$.zip.$touch"/>
+      <input type="number"   oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" class="form-control" id="zip" v-model="zip" @blur="v$.zip.$touch"/>
       <div style="color:red" class="error" v-if="v$.zip.$error">A zip code is required.</div>
     </div>
     <div class="mb-3">
       <label for="phonenumber1" class="form-label">Phone #1</label>
-      <input type="text" class="form-control" id="phonenumber1" v-model="phonenumber1" @blur="v$.phonenumber1.$touch"/>
+      <input type="number" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" class="form-control" id="phonenumber1" v-model="phonenumber1" @blur="v$.phonenumber1.$touch"/>
       <div style="color:red" class="error" v-if="v$.phonenumber1.$error">Your phone number needs to be exactly 10 digits</div>
     </div>
 
     <div class="mb-3">
       <label for="phonenumber2" class="form-label">Phone #2</label>
-      <input type="text" class="form-control" id="phonenumber2" />
+      <input type="number" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" class="form-control" id="phonenumber2" />
     </div>
     <div class="mb-3 form-check">
       <input type="checkbox" class="form-check-input" id="validator" />
@@ -109,40 +109,7 @@
   }
 </script>
  
-<!-- <script>
 
-
-const app = new VueElement({
-  el: '.customerForm',
-  data : {
-    errors: [],
-    fullname: null,
-    email: null,
-    phonenumber1: null
-  }
-},{
-  methods: {
-    checkForm: function(e) {
-      if (this.fullname && this.email && this.phonenumber1) {
-        return true; 
-      }
-
-      this.errors = [];
-
-      if (!this.name) {
-        this.errors.push('Name required');
-
-      }
-      if (!this.email) {
-        this.errors.push('Email required')
-      }
-
-      e.preventDefault();
-    }
-  }
-})
-
-</script> -->
 
 
 
@@ -152,7 +119,4 @@ const app = new VueElement({
   justify-content: center;
 }
 
-.id {
-
-}
 </style>
