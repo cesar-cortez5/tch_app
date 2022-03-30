@@ -91,18 +91,7 @@
   	methods: {
   		async submitForm() {
           const isFormCorrect = await this.v$.$validate()
-          // you can show some extra alert to the user or just leave the each field to show it's `$errors`.
           if (!isFormCorrect) return
-  				// if (!this.v$.$error) { // if ANY fail validation
-  				// 	alert('Form successfully submitted.')
-          // } else if (this.v$.fullname.$error) {
-          //   alert('A name is required')
-        
-  				// } else if (this.v$.email.$error) {
-  				// 	alert('An e-mail is required')
-  				// } else if (this.v$.required.$error) {
-  				// 	alert('At least one phone number is required')
-  				// } 
   		},
 
       }
