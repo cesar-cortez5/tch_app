@@ -22,8 +22,8 @@ username = 'sa'
 password = 'Password55!' 
 
 conn = pymssql.connect(server, username, password, database)
-cursor = conn.cursor(as_dict=True)
-
+cursor = conn.cursor()
+dict_cursor = conn.cursor(as_dict=True)
 
 
 def get_max_id(table: str, column_name: str, cursor) -> int:
@@ -33,8 +33,10 @@ def get_max_id(table: str, column_name: str, cursor) -> int:
     '''
     print(table, column_name)
     max_id_query = f'SELECT MAX({column_name}) FROM {table}'
+    #max_id_query = "SELECT * FROM Customer_Info"
     cursor.execute(max_id_query)
     index = cursor.fetchone()[0]
+    print(index)
     if index is None:
         index = 0
     
@@ -72,7 +74,8 @@ def new_customer(customer_info: CustomerInfo):
     conn.commit()
     return {
         "status": "SUCCESS",
-        "data": customer_info
+        "data": customer_info,
+        "customer_id": customer_info_id
     }
 
 @app.get("/get_customer")
@@ -82,8 +85,8 @@ def show_customers(customer_name: str):
     customer_query = '''SELECT ci.Customer_ID, ci.First_Name, ci.Last_Name, cc.Customer_Email FROM Customer_Info ci
                      INNER JOIN Customer_Contact cc ON cc.Customer_ID = ci.Customer_Id
                      WHERE ci.First_Name = %s and ci.Last_Name = %s'''
-    cursor.execute(customer_query, (firstname, lastname))
-    return {"customers": cursor.fetchall()}
+    dict_cursor.execute(customer_query, (firstname, lastname))
+    return {"customers": dict_cursor.fetchall()}
 
 if __name__ == "__main__":
     import uvicorn

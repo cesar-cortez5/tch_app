@@ -1,5 +1,18 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
+//To add a new router, add this to the end of the file
+/*
+    ,
+    {
+      path: '/REPLACE_THIS_WITH_YOUR_PAGE_NAME',
+      name: 'REPLACE_THIS_WITH_YOUR_PAGE_NAME',
+      // route level code-splitting
+      // this generates a separate chunk (About.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../views/NewCustomer.vue')
+    }
+*/
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -38,7 +51,7 @@ const router = createRouter({
     name: 'customer_query',
     component: () => import('../views/Customers.vue'),
 
-  }
+  } //Add your new router here
   ]
 })
 
