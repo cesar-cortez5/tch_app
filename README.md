@@ -20,7 +20,7 @@ If you want to run the whole web app on your computer, follow these steps
 How to Install (Windows)
 1. Download Python https://www.python.org/downloads/ if not installed
 2. Download Node https://nodejs.org/en/download/ if not installed
-3. Download this repository as ZIP (top right zip icon)
+3. Download this repository as ZIP (should be a green button that says Code
 4. Extract it
 5. Using the command prompt, navigate to the location of the folder you just extracted with _cd_. ie. cd C:\Downloads\tch_app\
   * You can find the location when you open up the file exporer, and click on the search bar on the top. Then, copy that location and paste it into the command prompt. Don't forget the cd before it.
