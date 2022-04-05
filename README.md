@@ -1,6 +1,8 @@
 # tch_app
 The Computer Hospital - Web App (CIS 3343 Project)
 
+Templates are located within the singlepage folder
+
 If you just want to run a single web page (with no javascript or connection to the db).
 1. Download the template - _template.html_
 2. Open _https://getbootstrap.com/docs/5.0/getting-started/introduction/_
@@ -12,12 +14,13 @@ If you just want to run a single web page (with no javascript or connection to t
   * You can also write your javascript login within the script tag. However, in my opinion VUE makes it much easier to write javascript, but you need to install the whole web application.
   * You can also just design the page, and I'll link it up with the rest of the web application.
   * Any questions let me know
+ 6. After you are done, you can upload your page within the single page folder, I'll add it to the web application.
 
 If you want to run the whole web app on your computer, follow these steps
 How to Install (Windows)
 1. Download Python https://www.python.org/downloads/ if not installed
 2. Download Node https://nodejs.org/en/download/ if not installed
-3. Download this repository as ZIP (top right zip icon)
+3. Download this repository as ZIP (should be a green button that says Code
 4. Extract it
 5. Using the command prompt, navigate to the location of the folder you just extracted with _cd_. ie. cd C:\Downloads\tch_app\
   * You can find the location when you open up the file exporer, and click on the search bar on the top. Then, copy that location and paste it into the command prompt. Don't forget the cd before it.
@@ -33,6 +36,12 @@ How to Install (Windows)
 12. Start the frontend server by doing _npm run dev_
 
 If you want, you can stop here and start navigating around, and working with the _template.vue_ file. However, database calls will not work as the backend service is not up.
+
+ * You can use the template.vue, or use my code from one of my pages located within the frontend/src/views or frontend/src/component as reference
+ * You can also upload them to the singlepages folder, or add them within the frontend/src/views folder. If you want your link to work, make sure you have added it to the frontend/router/index.js file as a router. Just copy the code for the /new_customer page. {path: '/new_customer', name: /new_customer}
+ * Or just let me know and Ill add it 
+ * Any questions let me know
+
 If you have a database setup, or are connected to the remote database (not set up yet as of April 4, 2022), then you can also start the backend service.
 
 13. Navigate to the backend folder by first doing _cd .._ then _cd backend\_
@@ -40,3 +49,5 @@ If you have a database setup, or are connected to the remote database (not set u
 15. Run _python main.py_
   *If an error occurs, try python3 main.py
   *If an error still occurs, let me know
+ 16. From here, you can start adding some APIs, such as creating a new employee, or getting data from a customer
+  
