@@ -49,4 +49,5 @@ If you have a database setup, or are connected to the remote database (not set u
 15. Run _python main.py_
   *If an error occurs, try python3 main.py
   *If an error still occurs, let me know
+ 16. From here, you can start adding some APIs, such as creating a new employee, or getting data from a customer
   
