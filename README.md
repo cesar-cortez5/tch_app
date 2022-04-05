@@ -8,7 +8,7 @@ If you just want to run a single web page (with no javascript or connection to t
 4. Copy and paste the code you want
 5. Within the style tag is where you will code your CSS
   * I like using https://www.w3schools.com/css/ as a reference, but google has a lot of answers.
-  * div tags are also very useful in designing. If there is a group of components that should be together, such as a picture and a button, or a textbox     and a checkbox, wrap them around in a <div>
+  * div tags are also very useful in designing. If there is a group of components that should be together, such as a picture and a button, or a textbox     and a checkbox, wrap them around in a div
   * You can also write your javascript login within the script tag. However, in my opinion VUE makes it much easier to write javascript, but you need to install the whole web application.
   * You can also just design the page, and I'll link it up with the rest of the web application.
   * Any questions let me know
