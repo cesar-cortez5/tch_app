@@ -36,8 +36,9 @@ How to Install (Windows)
 12. Start the frontend server by doing _npm run dev_
 
 If you want, you can stop here and start navigating around, and working with the _template.vue_ file. However, database calls will not work as the backend service is not up.
- *You can use the template.vue, or use my code from one of my pages located within the frontend/src/views or frontend/src/component as reference
- *You can also upload them to the singlepages folder, or add them within the frontend/src/views folder. If you want your link to work, make sure you have added it to the frontend/router/index.js file as a router. Just copy the code for the /new_customer page. {path: '/new_customer', name: /new_customer}
+
+ * You can use the template.vue, or use my code from one of my pages located within the frontend/src/views or frontend/src/component as reference
+ * You can also upload them to the singlepages folder, or add them within the frontend/src/views folder. If you want your link to work, make sure you have added it to the frontend/router/index.js file as a router. Just copy the code for the /new_customer page. {path: '/new_customer', name: /new_customer}
  * Or just let me know and Ill add it 
  * Any questions let me know
 
