@@ -1,4 +1,7 @@
+<!-- Main page that loads everything. You can definde global CSS values here also-->
+
 <script setup>
+//Importing required components. You shouldn't need to change this
 import { RouterLink, RouterView } from 'vue-router'
 import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap"
@@ -8,7 +11,10 @@ import { VueElement } from 'vue'
 </script>
 
 <template>
+
+  <!-- The navbar that is showed on the top of the page -->
   <navbar></navbar>
+  <!-- This routerview loads the router/index.js file, and then loads the firstpage "/" as the homepage -->
   <RouterView/>
 
 </template>

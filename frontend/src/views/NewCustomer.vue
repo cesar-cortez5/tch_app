@@ -1,7 +1,16 @@
+<!-- Now this is a scary one -->
+
 <template>
+  <!-- Using form template from the bootstrap website -->
   <div class="customerform">
     <div class="mb-3">
       <label for="fullname" class="form-label">Full Name</label>
+      <!-- The v-model attribute is used to reactively connect the text within the form, and variables within the <script> tag
+        This allows us to validate the form to make sure is not empty, and also get the information after the submit button is clicked
+        
+        The @blur attribute executes a command after an element has lost focused. For instance, if you have clicked on a textbox,
+        then click on another textbok, then it will execute
+        In this case, it executes v$.fullnae.$touch, which is a function that validates the form using the rules defined below.-->
       <input
         type="text"
         class="form-control"
@@ -9,6 +18,8 @@
         v-model="fullname"
         @blur="v$.fullname.$touch"
       />
+      <!-- This div only shows up if an error occurs
+      We accomplish this using the v-if attribute. Then, the v$.fullname.error is a boolean (True or False) -->
       <div style="color: red" class="error" v-if="v$.fullname.$error">
         Name is required
       </div>
@@ -72,6 +83,7 @@
     </div>
     <div class="mb-3">
       <label for="phonenumber1" class="form-label">Phone #1</label>
+      <!-- The oninput attribute contains a javascript command that on the fly deletes any character that is not a number -->
       <input
         type="number"
         oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"
@@ -107,13 +119,17 @@
 </template>
 
 <script>
+//I am using vuelidate to validate forms. More info here https://vuelidate-next.netlify.app/
 import useValidate from "@vuelidate/core";
 import { required, maxLength, numeric, minLength } from "@vuelidate/validators";
+//Axios for API calls
 import axios from "axios";
 export default {
+  //This setup is ran at the start. The v$:use validate() creates a new isntance of vuelidate
   setup() {
     return { v$: useValidate() };
   },
+  //Creating new variables that will be retrieved from the form
   data() {
     return {
       fullname: "",
@@ -128,7 +144,9 @@ export default {
   },
   validations() {
     return {
+      //The required tag throws an error if a textbox is empty
       fullname: { required },
+      //The maxLength tag makes sure that a textbox does not go over 30 characters long
       company_name: {maxLength: maxLength(30)},
       email: { required },
       address: { required },
@@ -137,6 +155,7 @@ export default {
       phonenumber1: {
         required,
         maxLength: maxLength(10),
+        //The numeric tag makes sure that the input is only numbers
         numeric: numeric,
         minLength: minLength(10),
       },
@@ -148,10 +167,15 @@ export default {
     };
   },
   methods: {
+    //This function is run after the submit button is clicked
+    //Async is used here as it is retrieving the data from the form on the fly, and the data could change if there is an error.
     async submitForm() {
+      //This variable validates the form, and returns a JSON object that contains any errors that occured
       const isFormCorrect = await this.v$.$validate();
+      //If no errors, then the following code will run
       if (isFormCorrect){
       console.log('HELLO')
+      //The customer_info JSON will be send to the customer_query api as a payload
       let customer_info = {
           customer_name: this.fullname,
           company_name: this.company_name,
@@ -163,10 +187,14 @@ export default {
           phone2: this.phonenumber2,
         }
       console.log(customer_info)
+      //Making a post request to the /new_customer endpoint from our backend, with customer_info variable as a payload
       axios
         .post("/new_customer", customer_info)
         .then((res) => {
+          //Getting the data from the request. In this case, the endpoint returns a customer id
           this.customer_id = res.data;
+          //After the axios request is done, it then redirects the webpage to the customer_queyr page. For more information on this, look at
+          //the ReturningCusomer.vue file, and also the router/index.js file
           let route_to = `/customer_query/?customer_name=${this.fullname}`;
           this.$router.push(route_to)
         })

@@ -24,26 +24,21 @@ const router = createRouter({
     {
       path: '/new_customer',
       name: 'new_customer',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import('../views/NewCustomer.vue')
     },
     {
       path: '/returning_customer',
       name: 'returning_customer',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import('../views/ReturningCustomer.vue')
     },
-    {    
+    { 
+      /* This is used whenever search is made for a name. For instance, if a customer searches for cesar cortez,
+      the link will be /customer_query?customerName=cesar%cortez, but it will redirect to /customer_query, and send 
+      'cesar cortez' as a parameter    
+      */
       path: '/customer_query:customerName',
       redirect: to => {
         return {path: '/customer_query', query: {'customer_name': to.params.customerName}}
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
     }
   },
   {
@@ -51,7 +46,7 @@ const router = createRouter({
     name: 'customer_query',
     component: () => import('../views/Customers.vue'),
 
-  } //Add your new router here
+  } //Add your new router here. Make sure you add the component: ()=> import('') statement as this is what imports your webpage.  
   ]
 })
 
