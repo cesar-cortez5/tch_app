@@ -1,6 +1,8 @@
 # tch_app
 The Computer Hospital - Web App (CIS 3343 Project)
 
+Templates are located within the singlepage folder
+
 If you just want to run a single web page (with no javascript or connection to the db).
 1. Download the template - _template.html_
 2. Open _https://getbootstrap.com/docs/5.0/getting-started/introduction/_
@@ -12,6 +14,7 @@ If you just want to run a single web page (with no javascript or connection to t
   * You can also write your javascript login within the script tag. However, in my opinion VUE makes it much easier to write javascript, but you need to install the whole web application.
   * You can also just design the page, and I'll link it up with the rest of the web application.
   * Any questions let me know
+ 6. After you are done, you can upload your page within the single page folder
 
 If you want to run the whole web app on your computer, follow these steps
 How to Install (Windows)
