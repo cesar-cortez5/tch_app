@@ -19,21 +19,23 @@ If you just want to run a single web page (with no javascript or connection to t
 If you want to run the whole web app on your computer, follow these steps
 How to Install (Windows)
 1. Download Python https://www.python.org/downloads/ if not installed
-2. Download Node https://nodejs.org/en/download/ if not installed
-3. Download this repository as ZIP (should be a green button that says Code
-4. Extract it
-5. Using the command prompt, navigate to the location of the folder you just extracted with _cd_. ie. cd C:\Downloads\tch_app\
+ * Make sure you check 'Add python to path' when installing, if not you'll have to manually add it. Here's a tutorial on how to manually add it to path
+ * https://datatofish.com/add-python-to-windows-path/
+3. Download Node https://nodejs.org/en/download/ if not installed
+5. Download this repository as ZIP (should be a green button that says Code
+6. Extract it
+7. Using the command prompt, navigate to the location of the folder you just extracted with _cd_. ie. cd C:\Downloads\tch_app\
   * You can find the location when you open up the file exporer, and click on the search bar on the top. Then, copy that location and paste it into the command prompt. Don't forget the cd before it.
-6. Navigate into the backend by doing cd backend\
-7. Run _pip install -r requirements.txt_
+8. Navigate into the backend by doing cd backend\
+9. Run _pip install -r requirements.txt_
   * If an error occurs, try pip3 intall -r requirements.txt
   * If an error still occurs, let me know
-8. Now go back to the main folder by doing _cd .._
-9. Navigate to the frontend by doing cd frontend\
-10. Run _npm install_
+10. Now go back to the main folder by doing _cd .._
+11. Navigate to the frontend by doing cd frontend\
+12. Run _npm install_
   * If an error occurs, let me know
-11. If no error, you should be ready to start both servers
-12. Start the frontend server by doing _npm run dev_
+13. If no error, you should be ready to start both servers
+14. Start the frontend server by doing _npm run dev_
 
 If you want, you can stop here and start navigating around, and working with the _template.vue_ file. However, database calls will not work as the backend service is not up.
 
