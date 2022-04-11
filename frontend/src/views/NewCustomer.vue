@@ -4,7 +4,7 @@
   <!-- Using form template from the bootstrap website -->
   <div class="customerform">
     <div class="mb-3">
-      <label for="fullname" class="form-label">Full Name</label>
+      <label for="firstname" class="form-inline">First Name</label>
       <!-- The v-model attribute is used to reactively connect the text within the form, and variables within the <script> tag
         This allows us to validate the form to make sure is not empty, and also get the information after the submit button is clicked
         
@@ -13,15 +13,37 @@
         In this case, it executes v$.fullnae.$touch, which is a function that validates the form using the rules defined below.-->
       <input
         type="text"
-        class="form-control"
-        id="fullname"
-        v-model="fullname"
-        @blur="v$.fullname.$touch"
+        class="form-inline"
+        id="firstname"
+        v-model="firstname"
+        @blur="v$.firstname.$touch"
+      />
+      <label for="middleinitial" class="form-inline">Middle Initial</label>
+      <input
+        type="text"
+        class="form-inline"
+        id="middleinitial"
+        v-model="middleinitial"
+        @blur="v$.middleinitial.$touch"
+      />
+      <label for="lastname" class="form-inline">Last Name</label>
+      <input
+        type="text"
+        class="form-inline"
+        id="lastname"
+        v-model="lastname"
+        @blur="v$.lastname.$touch"
       />
       <!-- This div only shows up if an error occurs
       We accomplish this using the v-if attribute. Then, the v$.fullname.error is a boolean (True or False) -->
-      <div style="color: red" class="error" v-if="v$.fullname.$error">
-        Name is required
+      <div style="color: red" class="error" v-if="v$.firstname.$error">
+        First Name is required
+      </div>
+      <div style="color: red" class="error" v-if="v$.middleinitial.$error">
+        Middle initial needs to be exactly 1 character
+      </div>
+      <div style="color: red" class="error" v-if="v$.lastname.$error">
+        Last Name is required
       </div>
     </div>
     <div class="mb-3">
@@ -132,11 +154,14 @@ export default {
   //Creating new variables that will be retrieved from the form
   data() {
     return {
-      fullname: "",
+      firstname: "",
+      lastname: "",
+      middleinitial: "",
       company_name: "",
       email: "",
       address: "",
-      citystate: "",
+      city: "",
+      state: "",
       zip: "",
       phonenumber1: "",
       phonenumber2: "",
@@ -145,8 +170,10 @@ export default {
   validations() {
     return {
       //The required tag throws an error if a textbox is empty
-      fullname: { required },
+      firstname: { required },
+      middleinitial: {required, minLength: minLength(1), maxLength: maxLength(1)},
       //The maxLength tag makes sure that a textbox does not go over 30 characters long
+      lastname : {required},
       company_name: {maxLength: maxLength(30)},
       email: { required },
       address: { required },
@@ -169,6 +196,7 @@ export default {
   methods: {
     //This function is run after the submit button is clicked
     //Async is used here as it is retrieving the data from the form on the fly, and the data could change if there is an error.
+    getStates() {},
     async submitForm() {
       //This variable validates the form, and returns a JSON object that contains any errors that occured
       const isFormCorrect = await this.v$.$validate();
@@ -177,12 +205,15 @@ export default {
       console.log('HELLO')
       //The customer_info JSON will be send to the customer_query api as a payload
       let customer_info = {
-          customer_name: this.fullname,
-          company_name: this.company_name,
+          firstname: this.firstname,
+          middleInitial: this.middleInitial,
+          lastName: this.lastName,
           email: this.email,
           address: this.address,
-          citystate: this.citystate,
+          city: this.city,
+          state: this.state,
           zip: this.zip,
+          country: this.country,
           phone1: this.phonenumber1,
           phone2: this.phonenumber2,
         }
@@ -192,10 +223,10 @@ export default {
         .post("/new_customer", customer_info)
         .then((res) => {
           //Getting the data from the request. In this case, the endpoint returns a customer id
-          this.customer_id = res.data;
+          this.customer_id = res.data.customer_id;
           //After the axios request is done, it then redirects the webpage to the customer_queyr page. For more information on this, look at
           //the ReturningCusomer.vue file, and also the router/index.js file
-          let route_to = `/customer_query/?customer_name=${this.fullname}`;
+          let route_to = `/customer_query_id/?customerId=${this.customer_id}`;
           this.$router.push(route_to)
         })
         .catch((error) => {
@@ -216,4 +247,20 @@ export default {
   margin: 20px;
   justify-content: center;
 }
+#firstname {
+  margin-right: 10px;
+  margin-left: 10px;
+  width: 30%
+}
+#middleinitial {
+  margin-right: 10px;
+  margin-left: 10px;
+  width: 5%
+}
+#lastname {
+  margin-right: 10px;
+  margin-left: 10px;
+  width: 30%
+}
+
 </style>
