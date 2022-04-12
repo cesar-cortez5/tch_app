@@ -1,4 +1,5 @@
 from distutils.log import debug
+from re import L
 from typing import Optional
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -54,6 +55,7 @@ def new_customer(customer_info: CustomerInfo):
     or the way I am doing it by using string interpolation, in which the %s, %s, %s are placeholders, and the placeholders are replaced
     using variables that are retrieved from cursor.execute'''
     #SQL query to insert into Customer_Info table.
+    print(customer_info)
     customer_info_query = 'INSERT INTO CUSTOMER VALUES(%s, %s, %s)'
     cursor.execute(customer_info_query, (customer_info.first_name, customer_info.middle_initial, customer_info.last_name))
     customer_id = cursor.lastrowid
@@ -81,12 +83,40 @@ def new_customer(customer_info: CustomerInfo):
 def show_customers(customer_name: str):
     firstname, lastname = customer_name.split()
 
-    #Getting all customers where first name and lat name match
+    #Getting all customers where first name and last name match
     customer_query = '''SELECT ci.Customer_ID, ci.First_Name, ci.Last_Name, cc.Customer_Email FROM Customer_Info ci
                      INNER JOIN Customer_Contact cc ON cc.Customer_ID = ci.Customer_Id
                      WHERE ci.First_Name = %s and ci.Last_Name = %s'''
     dict_cursor.execute(customer_query, (firstname, lastname))
     return {"customers": dict_cursor.fetchall()}
+
+@app.post("/new_invoice")
+def new_invoice(customer_id: int, bench_number: str, invoice_date: str, invoice_status_id: int):
+    new_invoice_query = '''
+    INSERT INTO Invoice (Customer_ID, Bench_Number, Invoice_Date) VALUES (%s, %s, %s, %s)
+    '''
+    cursor.execute(new_invoice_query, (customer_id, bench_number, invoice_date, invoice_status_id))
+    invoice_id = cursor.lastrowid
+    conn.commit()
+    return {"invoice_id": invoice_id}
+
+@app.get("/invoices")
+def current_invoices(customer_id: int):
+    invoice_query = '''
+    SELECT * FROM Invoice WHERE Invoice_ID = %s
+    '''
+    dict_cursor.execute(invoice_query, customer_id)
+    return {"invoice": dict_cursor.fetchall()}
+
+@app.get('/states')
+def states():
+    dict_cursor.execute('SELECT * From States')
+    return {"states": dict_cursor.fetchall()}
+
+@app.get('/countries')
+def countries():
+    dict_cursor.execute('SELECT * FROM Countries')
+    return {"countries": dict_cursor.fetchall()}
 
 if __name__ == "__main__":
     #Uvicorn is a python library used to easily test endpoints. When you run this, you can visit localhost:5001/docs, and see and test all the endpoints
