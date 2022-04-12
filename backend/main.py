@@ -113,6 +113,11 @@ def states():
     dict_cursor.execute('SELECT * From States')
     return {"states": dict_cursor.fetchall()}
 
+@app.get('/countries')
+def countries():
+    dict_cursor.execute('SELECT * FROM Countries')
+    return {"countries": dict_cursor.fetchall()}
+
 if __name__ == "__main__":
     #Uvicorn is a python library used to easily test endpoints. When you run this, you can visit localhost:5001/docs, and see and test all the endpoints
     import uvicorn

@@ -76,6 +76,27 @@
         Address is required
       </div>
     </div>
+      <div id="statedropdown" class="dropdown">
+        <button @click="getStates" class="btn btn-secondary dropdown-toggle" type="button" id="statebutton" data-bs-toggle="dropdown" aria-expanded="false">
+          State
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="statebutton">
+          <li v-for="state in msg.states" :key="state.State_Name"> <a class="dropdown-item" href="#" @click=''>{{state.State_Name}} </a></li>
+        </ul>
+      </div>
+      <div id="countrydropdown" class="dropdown">
+        <button v-if="selected_country == ''" @click="getCountries" class="btn btn-secondary dropdown-toggle" type="button" id="countrybutton" data-bs-toggle="dropdown" aria-expanded="false">
+          Country
+        </button>
+        <button v-else @click="getCountries" class="btn btn-secondary dropdown-toggle" type="button" id="countrybutton" data-bs-toggle="dropdown" aria-expanded="false">
+          Test
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="countrybutton">
+          <li v-for="country in msg.countries" :key="country.Country_Name"> <a class="dropdown-item" @click='selected_country = country.countryName' href="#">{{country.Country_Name}} </a></li>
+        </ul>
+      </div>
+
+
     <div class="mb-3">
       <label for="citystate" class="form-label">City, State</label>
       <input
@@ -163,8 +184,10 @@ export default {
       city: "",
       state: "",
       zip: "",
+      selected_country: "",
       phonenumber1: "",
       phonenumber2: "",
+      msg: ""
     };
   },
   validations() {
@@ -196,7 +219,25 @@ export default {
   methods: {
     //This function is run after the submit button is clicked
     //Async is used here as it is retrieving the data from the form on the fly, and the data could change if there is an error.
-    getStates() {},
+    getStates() {
+      axios.get("/states").then((res) => {
+        this.msg = res.data
+        console.log(this.msg)
+      })
+      .catch((error) => {
+        console.log(error)
+      });
+    },
+    getCountries() {
+      axios.get("/countries").then((res) => {
+        this.msg = res.data
+        console.log(this.msg)
+      })
+      .catch((error) => {
+        console.log(error)
+      });
+    },
+ 
     async submitForm() {
       //This variable validates the form, and returns a JSON object that contains any errors that occured
       const isFormCorrect = await this.v$.$validate();
@@ -262,5 +303,16 @@ export default {
   margin-left: 10px;
   width: 30%
 }
+#statebutton, #countrybutton {
+  margin: 5px;
+}
+
+
+.dropdown-menu {         
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+
 
 </style>

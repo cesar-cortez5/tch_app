@@ -58,7 +58,14 @@ const router = createRouter({
       name: 'customer_query',
       component: () => import('../views/CustomersSearchResult.vue'),
 
+    }, //Add your new router here. Make sure you add the component: ()=> import('') statement as this is what imports your webpage.  
+    {
+      path: '/customer_query',
+      name: 'customer_query',
+      component: () => import('../views/CustomersSearchResult.vue'),
+
     } //Add your new router here. Make sure you add the component: ()=> import('') statement as this is what imports your webpage.  
+
   ]
 })
 
