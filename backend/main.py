@@ -84,11 +84,17 @@ def show_customers(customer_name: str):
     firstname, lastname = customer_name.split()
 
     #Getting all customers where first name and last name match
-    customer_query = '''SELECT ci.Customer_ID, ci.First_Name, ci.Last_Name, cc.Customer_Email FROM Customer_Info ci
+    customer_query = '''SELECT ci.Customer_ID, ci.First_Name, ci.Last_Name, cc.Email FROM Customer ci
                      INNER JOIN Customer_Contact cc ON cc.Customer_ID = ci.Customer_Id
                      WHERE ci.First_Name = %s and ci.Last_Name = %s'''
     dict_cursor.execute(customer_query, (firstname, lastname))
     return {"customers": dict_cursor.fetchall()}
+
+@app.get('/get_customer_id')
+def get_customer_id(customer_id: int):
+    customer_query = '''SELECT ci.Customer_ID, ci.First_Name, ci.Middle_Intial, ci.Last_Name, cc.Phone1, cc.Phone2, cc.Email FROM Customer ci
+                     INNER JOIN Customer_Contact cc ON cc.Customer_ID = ci.Customer_Id
+                     WHERE ci.Customer_ID = %s'''
 
 @app.post("/new_invoice")
 def new_invoice(customer_id: int, bench_number: str, invoice_date: str, invoice_status_id: int):
@@ -103,10 +109,14 @@ def new_invoice(customer_id: int, bench_number: str, invoice_date: str, invoice_
 @app.get("/invoices")
 def current_invoices(customer_id: int):
     invoice_query = '''
-    SELECT * FROM Invoice WHERE Invoice_ID = %s
+    SELECT Invoice.Invoice_ID, e.Equipment_ID, e.Brand, Invoice.Bench_Number, Invoice_Status.Status_Name FROM Invoice 
+    INNER JOIN Customer ON Customer.Customer_ID = Invoice.Customer_ID
+    INNER JOIN Equipment e ON e.Invoice_ID = Invoice.Invoice_ID
+    LEFT JOIN Invoice_Status ON Invoice_Status.Status_ID = Invoice.Invoice_Status_ID
+    WHERE Invoice.Customer_ID = %s
     '''
     dict_cursor.execute(invoice_query, customer_id)
-    return {"invoice": dict_cursor.fetchall()}
+    return {"invoices": dict_cursor.fetchall()}
 
 @app.get('/states')
 def states():
@@ -117,6 +127,31 @@ def states():
 def countries():
     dict_cursor.execute('SELECT * FROM Countries')
     return {"countries": dict_cursor.fetchall()}
+
+class AdminLogin(BaseModel):
+    username: str
+    password: str
+    
+@app.post('/new_admin_login')
+def new_admin_login(admin_login: AdminLogin):
+    query = '''
+    INSERT INTO Admin_Login (username, password) VALUES (%s, %s)
+    '''
+    cursor.execute(query, (admin_login.username, admin_login.password))
+    conn.commit()
+    
+@app.post('/admin_login')
+def admin_login(admin_login:AdminLogin):
+    query = '''SELECT * FROM Admin_Login WHERE username = %s AND password = %s'''
+    cursor.execute(query, (admin_login.username, admin_login.password))
+    exist = cursor.fetchone()
+    if exist:
+        return {"authorized": True}
+    else:
+        return {"authorized": False}
+
+
+
 
 if __name__ == "__main__":
     #Uvicorn is a python library used to easily test endpoints. When you run this, you can visit localhost:5001/docs, and see and test all the endpoints

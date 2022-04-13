@@ -32,16 +32,16 @@ const router = createRouter({
       component: () => import('../views/ReturningCustomer.vue')
     },
     {
-      path: '/customer_query_id:customerId',
+      path: '/customer_page:customerId',
       redirect: to => {
-        return {path: 'customer_query_id', query: {'customer_id': to.params.customerId}}
+        return {path: 'customer_page', query: {'customer_id': to.params.customerId}}
       }
     
     },
     {
-      path: '/customer_query_id',
-      name: 'customer_query',
-      component: () => import ('../views/Customer.vue')
+      path: '/customer_page',
+      name: 'customer_page',
+      component: () => import ('../views/CustomerEdit.vue')
     },
     {
       /* This is used whenever search is made for a name. For instance, if a customer searches for cesar cortez,
@@ -58,14 +58,9 @@ const router = createRouter({
       name: 'customer_query',
       component: () => import('../views/CustomersSearchResult.vue'),
 
-    }, //Add your new router here. Make sure you add the component: ()=> import('') statement as this is what imports your webpage.  
-    {
-      path: '/customer_query',
-      name: 'customer_query',
-      component: () => import('../views/CustomersSearchResult.vue'),
-
-    } //Add your new router here. Make sure you add the component: ()=> import('') statement as this is what imports your webpage.  
-
+    },
+      
+     //Add your new router here. Make sure you add the component: ()=> import('') statement as this is what imports your webpage.  
   ]
 })
 
