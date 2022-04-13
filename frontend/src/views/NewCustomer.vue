@@ -76,40 +76,23 @@
         Address is required
       </div>
     </div>
-      <div id="statedropdown" class="dropdown">
-        <button @click="getStates" class="btn btn-secondary dropdown-toggle" type="button" id="statebutton" data-bs-toggle="dropdown" aria-expanded="false">
-          State
-        </button>
-        <ul class="dropdown-menu" aria-labelledby="statebutton">
-          <li v-for="state in msg.states" :key="state.State_Name"> <a class="dropdown-item" href="#" @click=''>{{state.State_Name}} </a></li>
-        </ul>
-      </div>
-      <div id="countrydropdown" class="dropdown">
-        <button v-if="selected_country == ''" @click="getCountries" class="btn btn-secondary dropdown-toggle" type="button" id="countrybutton" data-bs-toggle="dropdown" aria-expanded="false">
-          Country
-        </button>
-        <button v-else @click="getCountries" class="btn btn-secondary dropdown-toggle" type="button" id="countrybutton" data-bs-toggle="dropdown" aria-expanded="false">
-          Test
-        </button>
-        <ul class="dropdown-menu" aria-labelledby="countrybutton">
-          <li v-for="country in msg.countries" :key="country.Country_Name"> <a class="dropdown-item" @click='selected_country = country.countryName' href="#">{{country.Country_Name}} </a></li>
-        </ul>
-      </div>
 
-
-    <div class="mb-3">
-      <label for="citystate" class="form-label">City, State</label>
-      <input
-        type="text"
-        class="form-control"
-        id="citystate"
-        v-model="citystate"
-        @blur="v$.citystate.$touch"
-      />
-      <div style="color: red" class="error" v-if="v$.citystate.$error">
-        A city and a state is required
-      </div>
-    </div>
+          <div class="row">
+              <div class="col-sm-6">
+                  <div class="form-group">
+          <select @click="getStates" @change="onChangeState($event)" class="form-select" aria-label="State" id="statedropdown">
+                          <option v-for="state in msg.states" :key="state.State_Name" :value = "state.State_ID">{{state.State_Name}}</option>
+                      </select>
+                  </div>
+              </div>
+              <div class="col-sm-6">
+                  <div class="form-group">
+          <select  @click="getCountries" @change="onChangeCountry($event)" class="form-select" aria-label="Country" id="countrydropdown">
+            <option v-for="country in msg.countries" :value = "country.Country_ID">{{country.Country_Name}}</option>
+                      </select>
+                  </div>
+              </div>
+          </div>
     <div class="mb-3">
       <label for="zip" class="form-label">Zip</label>
       <input
@@ -194,13 +177,12 @@ export default {
     return {
       //The required tag throws an error if a textbox is empty
       firstname: { required },
-      middleinitial: {required, minLength: minLength(1), maxLength: maxLength(1)},
+      middleinitial: {maxLength: maxLength(1)},
       //The maxLength tag makes sure that a textbox does not go over 30 characters long
       lastname : {required},
       company_name: {maxLength: maxLength(30)},
       email: { required },
       address: { required },
-      citystate: { required },
       zip: { required },
       phonenumber1: {
         required,
@@ -219,6 +201,13 @@ export default {
   methods: {
     //This function is run after the submit button is clicked
     //Async is used here as it is retrieving the data from the form on the fly, and the data could change if there is an error.
+    onChangeState(event) {
+      console.log(event.target.value)
+      this.state = event.target.value
+    },
+    onChangeCountry(event) {
+      this.selected_country = event.target.value
+    },
     getStates() {
       axios.get("/states").then((res) => {
         this.msg = res.data
@@ -246,15 +235,16 @@ export default {
       console.log('HELLO')
       //The customer_info JSON will be send to the customer_query api as a payload
       let customer_info = {
-          firstname: this.firstname,
-          middleInitial: this.middleInitial,
-          lastName: this.lastName,
+          first_name: this.firstname,
+          middle_initial: this.middleinitial,
+          last_name: this.lastname,
+          company_name: this.company_name,
           email: this.email,
           address: this.address,
           city: this.city,
           state: this.state,
           zip: this.zip,
-          country: this.country,
+          country: this.selected_country,
           phone1: this.phonenumber1,
           phone2: this.phonenumber2,
         }
