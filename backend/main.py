@@ -150,7 +150,16 @@ def admin_login(admin_login:AdminLogin):
     else:
         return {"authorized": False}
 
-
+@app.post('/employee_login')
+def employee_login(admin_login:AdminLogin):
+    #change later
+    query = '''SELECT * FROM Admin_Login WHERE username = %s AND password = %s'''
+    cursor.execute(query, (admin_login.username, admin_login.password))
+    exist = cursor.fetchone()
+    if exist:
+        return {"authorized": True}
+    else:
+        return {"authorized": False}
 
 
 if __name__ == "__main__":
