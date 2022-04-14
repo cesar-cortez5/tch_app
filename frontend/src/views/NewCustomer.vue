@@ -257,7 +257,7 @@ export default {
           this.customer_id = res.data.customer_id;
           //After the axios request is done, it then redirects the webpage to the customer_queyr page. For more information on this, look at
           //the ReturningCusomer.vue file, and also the router/index.js file
-          let route_to = `/customer_page/?customerId=${this.customer_id}`;
+          let route_to = `/customer_page/?customer_id=${this.customer_id}`;
           this.$router.push(route_to)
         })
         .catch((error) => {

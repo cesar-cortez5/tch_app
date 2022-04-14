@@ -42,6 +42,56 @@ class CustomerInfo(BaseModel):
     phone1: str
     phone2: Optional[str]
 
+@app.post("/new_cintry")
+def new_state(country_name, country_abbrv):
+    query = "INSERT INTO Countries VALUES (%s, %s)"
+    cursor.execute(query, (country_name, country_abbrv))
+    conn.commit()
+
+@app.post("/new_state")
+def new_state(state_name, state_abbr):
+    query = "INSERT INTO States VALUES (%s, %s)"
+    cursor.execute(query, (state_name, state_abbr))
+
+@app.delete("/delete_country")
+def delete_state(id: int):
+    employee_query = 'Delete FROM Employee_Address WHERE Country = %s'
+    customer_query = 'DELETE FROM Customer_Address WHERE Country = %s'
+
+    country = 'DELETE FROM Country where Country_ID = %s'
+
+    cursor.execute(employee_query, id)
+    cursor.execute(customer_query, id)
+    cursor.execute(country, id) 
+    conn.commit()
+
+@app.delete("/delete_state")
+def delete_state(id: int):
+    employee_query = 'Delete FROM Employee_Address WHERE State = %s'
+    customer_query = 'DELETE FROM Customer_Address WHERE State = %s'
+
+    state_query = 'DELETE FROM States where State_ID = %s'
+
+    cursor.execute(employee_query, id)
+    cursor.execute(customer_query, id)
+    cursor.execute(state_query, id) 
+    conn.commit()
+
+
+@app.delete("/delete_invoice")
+def delete_invoice(id: int):
+    invoice_query = '''
+    DELETE FROM Invoice WHERE Invoice_ID = %s
+    '''
+
+    equipment_query = '''
+    DELETE FROM Equipment WHERE Invoice_ID = %s
+    '''
+
+    cursor.execute(equipment_query, id)
+    cursor.execute(invoice_query, id)
+    conn.commit()
+
 #Creating a new endpoint called /new_customer, that takes in customer_info, which is a JSON strucutre in format above, as a parameter
 @app.post("/new_customer")
 def new_customer(customer_info: CustomerInfo):
@@ -111,8 +161,14 @@ class InvoiceEquipment(BaseModel):
     serialnumber: str
     customer_id: int
     pin: str
-@app.get("/update_status")
-def update_status(invoice_id: int, invoice_status_id: int):
+
+class UpdateStatus(BaseModel):
+    invoice_id: int
+    invoice_status_id: int
+
+@app.post("/update_status")
+def update_status(update_status: UpdateStatus):
+    invoice_id, invoice_status_id = update_status.invoice_id, update_status.invoice_status_id
     print(invoice_id, invoice_status_id)
     query = ''' UPDATE Invoice SET Invoice_Status_ID = %s WHERE Invoice_ID = %s  '''
     cursor.execute(query, (invoice_status_id, invoice_id))

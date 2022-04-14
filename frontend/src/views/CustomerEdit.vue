@@ -8,6 +8,8 @@
       <li class="list-group-item" v-for="invoice in msg.invoices" :value="invoice.Invoice_ID" :key="invoice.Invoice_ID">
             Bench Number: {{invoice.Bench_Number}} | Brand: {{invoice.Brand}} | Status: {{invoice.Equipment_Name}} ({{invoice.Status_Name}})
             <button id="customer_button" class="btn btn-primary btn-sm" :value = "invoice.Invoice_ID" @click="editInvoice($event)">Edit</button>
+            <button id="customer_button" class="btn btn-danger btn-sm" :value = "invoice.Invoice_ID" @click="deleteInvoice($event)">Delete</button>
+            
         </li>
     </ul>
   </div>
@@ -36,6 +38,13 @@ export default {
         console.log(event.target.value)
         let invoice = event.target.value
         this.$router.push({ name: 'update_status', query: { invoiceId: invoice}})
+    },
+    deleteInvoice(event){
+        console.log(event.target.value)
+        let invoice = event.target.value
+        axios.delete("/delete_invoice", {params : {
+          id: invoice
+        }})
     },
 
     //Function that is called when web page is loaded

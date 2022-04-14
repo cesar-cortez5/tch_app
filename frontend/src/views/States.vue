@@ -4,8 +4,11 @@
     <ul class="list-group" id="states">
       <li class="list-group-item" v-for="state in msg.states" :key="state.State_ID">
             {{state.State_Name}} {{state.State_Abbreviation}}
+            <button id="delete_button" class="btn btn-danger btn-sm" :value = "state.State_ID" @click="deleteState($event)">Delete</button>
+
         </li>
     </ul>
+
   </div>
 </template>
 
@@ -23,6 +26,20 @@ export default {
   },
   methods: {
     //Function that is called when web page is loaded
+    deleteState(event){
+        console.log(event.target.value)
+        let state = event.target.value
+        axios.delete("/delete_state", {params : {
+          id: state
+        }})
+      
+    },
+    newState(){
+        axios.delete("/delete_state", {params : {
+          id: state
+        }})
+      
+    },
     getStates() {
       axios
       //Sending a GET request with axios, with the customer name retrieved from the URL as the params.
@@ -48,5 +65,8 @@ export default {
 <style scoped>
 #customer_button{
     margin-left: 10px;
+}
+#new_button {
+  margin-top: 10px
 }
 </style>

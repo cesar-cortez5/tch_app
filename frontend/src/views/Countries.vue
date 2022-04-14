@@ -4,7 +4,10 @@
     <ul class="list-group" id="countries">
       <li class="list-group-item" v-for="country in msg.countries" :key="country.Country_ID">
             {{country.Country_Name}}
+            <button id="delete_button" class="btn btn-danger btn-sm" :value = "country.Country_ID" @click="deleteCountry($event)">Delete</button>
+
         </li>
+        
     </ul>
   </div>
 </template>
@@ -22,6 +25,14 @@ export default {
     };
   },
   methods: {
+    deleteCountry(event){
+        console.log(event.target.value)
+        let country = event.target.value
+        axios.delete("/delete_country", {params : {
+          id: country
+        }})
+      
+    },
     //Function that is called when web page is loaded
     getCountries() {
       axios

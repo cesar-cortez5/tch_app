@@ -2,7 +2,8 @@
   <div>
     <h3> Change Invoice Status </h3>
     <select
-      @click="getStatus"
+      @change="onChangeState($event)"
+
       class="form-select"
       aria-label="State"
       id="statedropdown"
@@ -11,10 +12,11 @@
         v-for="status in msg.statuses"
         :key="status.Status_ID"
         :value="status.Status_ID"
-        @click="onChangeState(status.Status_ID)"
       >
         {{ status.Status_Name }}
+        
       </option>
+
     </select>
   </div>
 </template>
@@ -42,14 +44,18 @@ export default {
           console.log(error);
         });
     },
-    onChangeState(status_id) {
+    onChangeState(event) {
+      let status_id = event.target.value
       this.status = parseInt(status_id);
       console.log(this.status)
       console.log(this.$route.query)
+      let invoice_params = {
+        invoice_id : parseInt(this.$route.query.invoiceId),
+        invoice_status_id: this.status
+      }
+      console.log(invoice_params)
       axios
-        .get("/update_status",{ crossDomain: true },{params: 
-        {invoice_id: parseInt(this.$route.query.invoiceId),
-        invoice_status_id: this.status}})
+        .post("/update_status", invoice_params)
         .then((res) => {
           this.msg = res.data;
           console.log(this.msg);
@@ -60,5 +66,8 @@ export default {
         });
     },
   },
+  created() {
+    this.getStatus();
+  }
 };
 </script>

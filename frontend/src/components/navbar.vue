@@ -23,7 +23,7 @@
                         Home
                     </router-link>
                     <router-link to="/login" class="nav-item nav-link">Employee Login</router-link>
-                    <router-link to="/admin" class="nav-item nav-link">Admin</router-link>
+                    <router-link to="/admin_options" class="nav-item nav-link">Admin</router-link>
                 </div>
             </div>
         </nav>
