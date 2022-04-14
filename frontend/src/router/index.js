@@ -64,7 +64,30 @@ const router = createRouter({
       component: () => import('../views/CustomersSearchResult.vue'),
 
     },
-      
+    {
+      path: '/new_invoice:customerId',
+      redirect: to => {
+        return {path: '/new_invoice', query: {'customer_id': to.params.customerId}}
+      }
+    
+    },
+    {
+      path: '/new_invoice',
+      name: 'new_invoice',
+      component: () => import ('../views/NewInvoice.vue')
+    },
+    {
+      path: '/update_status/:invoiceId',
+      redirect: to => {
+        return {path: '/update_status', query: {'invoice_id': to.params.invoiceId}}
+      }
+    
+    },
+    {
+      path: '/update_status',
+      name: 'update_status',
+      component: () => import ('../views/UpdateInvoice.vue')
+    }
      //Add your new router here. Make sure you add the component: ()=> import('') statement as this is what imports your webpage.  
   ]
 })

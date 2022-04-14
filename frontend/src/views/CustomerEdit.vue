@@ -1,13 +1,13 @@
 <template>
   <div>
     <!-- Design is taken from boostrap. Basically, this code is a list, and for each customer it creates a row with a button next to it.-->
-    <button id="new_invoice" class="btn btn-primary btn-sm">New Invoice</button>
+    <button id="new_invoice" class="btn btn-primary btn-sm" @click="newInvoice">New Invoice</button>
 
     <h3> Past Invoices </h3>
     <ul class="list-group" id="customers">
-      <li class="list-group-item" v-for="invoice in msg.invoices" :key="invoice.Invoice_ID">
+      <li class="list-group-item" v-for="invoice in msg.invoices" :value="invoice.Invoice_ID" :key="invoice.Invoice_ID">
             Bench Number: {{invoice.Bench_Number}} | Brand: {{invoice.Brand}} | Status: {{invoice.Equipment_Name}} ({{invoice.Status_Name}})
-            <button id="customer_button" class="btn btn-primary btn-sm">Edit</button>
+            <button id="customer_button" class="btn btn-primary btn-sm" :value = "invoice.Invoice_ID" @click="editInvoice($event)">Edit</button>
         </li>
     </ul>
   </div>
@@ -27,9 +27,15 @@ export default {
   },
   methods: {
     
-    newInvoice(){
-        axios
-        .post("/new_invoice", pa)
+    newInvoice() {
+      
+        let route_to = `/new_invoice/?customerId=${this.$route.query.customer_id}`;
+        this.$router.push(route_to)
+    },
+    editInvoice(event) {
+        console.log(event.target.value)
+        let invoice = event.target.value
+        this.$router.push({ name: 'update_status', query: { invoiceId: invoice}})
     },
 
     //Function that is called when web page is loaded
