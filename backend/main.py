@@ -1,4 +1,5 @@
 from distutils.log import debug
+from operator import inv
 from re import L
 from typing import Optional
 from fastapi import FastAPI
@@ -96,16 +97,48 @@ def get_customer_id(customer_id: int):
                      INNER JOIN Customer_Contact cc ON cc.Customer_ID = ci.Customer_Id
                      WHERE ci.Customer_ID = %s'''
 
+
+class InvoiceEquipment(BaseModel):
+    bench_number: str
+    invoice_date: str
+    invoice_status_id: int
+    loginuser: str
+    loginpassword: str
+    encryption: str
+    brand: str
+    model: str
+    operatingsystem: str
+    serialnumber: str
+    customer_id: int
+    pin: str
+@app.get("/update_status")
+def update_status(invoice_id: int, invoice_status_id: int):
+    print(invoice_id, invoice_status_id)
+    query = ''' UPDATE Invoice SET Invoice_Status_ID = %s WHERE Invoice_ID = %s  '''
+    cursor.execute(query, (invoice_status_id, invoice_id))
+    conn.commit()
+
 @app.post("/new_invoice")
-def new_invoice(customer_id: int, bench_number: str, invoice_date: str, invoice_status_id: int):
+def new_invoice(invoice_equipment: InvoiceEquipment):
     new_invoice_query = '''
-    INSERT INTO Invoice (Customer_ID, Bench_Number, Invoice_Date) VALUES (%s, %s, %s, %s)
+    INSERT INTO Invoice (Customer_ID, Bench_Number, Invoice_Date, Invoice_Status_ID) VALUES (%s, %s, %s, %s)
     '''
-    cursor.execute(new_invoice_query, (customer_id, bench_number, invoice_date, invoice_status_id))
+    cursor.execute(new_invoice_query, (invoice_equipment.customer_id, invoice_equipment.bench_number, invoice_equipment.invoice_date, invoice_equipment.invoice_status_id))
     invoice_id = cursor.lastrowid
     conn.commit()
-    return {"invoice_id": invoice_id}
+    new_equipment = '''
+    INSERT INTO Equipment VALUES (%s, %s, %s, %s ,%s, %s, %s, %s, %s)
+    '''
+    cursor.execute(new_equipment, (invoice_id, invoice_equipment.encryption, invoice_equipment.brand, invoice_equipment.loginuser, invoice_equipment.loginpassword, invoice_equipment.model, invoice_equipment.operatingsystem, invoice_equipment.pin, invoice_equipment.serialnumber))
+    equipment_id = cursor.lastrowid
+    conn.commit()
+    return {"invoice_id": invoice_id,
+            "equipment_id": equipment_id}
 
+@app.get("/status_types")
+def status_types():
+    dict_cursor.execute("SELECT * FROM Invoice_Status")
+    return {"statuses": dict_cursor.fetchall()}
 @app.get("/invoices")
 def current_invoices(customer_id: int):
     invoice_query = '''
@@ -137,7 +170,6 @@ def cust_contacttable():
 def cust_contacttable():
     dict_cursor.execute('SELECT * FROM Employee_Contact')
     return {"Employee_Contact": dict_cursor.fetchall()}
-
 class AdminLogin(BaseModel):
     username: str
     password: str
@@ -180,6 +212,8 @@ def employee_login(admin_login:AdminLogin):
         return {"authorized": True}
     else:
         return {"authorized": False}
+
+
 
 if __name__ == "__main__":
     #Uvicorn is a python library used to easily test endpoints. When you run this, you can visit localhost:5001/docs, and see and test all the endpoints
