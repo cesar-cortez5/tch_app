@@ -92,7 +92,7 @@ const router = createRouter({
     {
       path: '/admin_login',
       name: 'admin_login',
-      component: () => import('../views/admin.vue')
+      component: () => import('../views/Admin.vue')
     },
     {
       path: '/admin_options',
