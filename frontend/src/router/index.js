@@ -64,6 +64,36 @@ const router = createRouter({
       component: () => import('../views/CustomersSearchResult.vue'),
 
     },
+    {
+      path: '/admin_login',
+      name: 'admin_login',
+      component: () => import('../views/admin.vue')
+    },
+    {
+      path: '/admin_options',
+      name: 'admin_options',
+      component: () => import('../views/AdminOptions.vue')
+    },
+    {
+      path: '/States',
+      name: 'States',
+      component: () => import('../views/States.vue')
+    },
+    {
+      path: '/countries',
+      name: 'countries',
+      component: () => import('../views/Countries.vue')
+    },
+    {
+      path: '/Cust_ContactTable',
+      name: 'Cust_ContactTable',
+      component: () => import('../views/Cust_ContactTable.vue')
+    },
+    {
+      path: '/Emp_ContactTable',
+      name: 'Emp_ContactTable',
+      component: () => import('../views/Emp_ContactTable.vue')
+    },
       
      //Add your new router here. Make sure you add the component: ()=> import('') statement as this is what imports your webpage.  
   ]

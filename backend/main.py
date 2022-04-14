@@ -128,6 +128,16 @@ def countries():
     dict_cursor.execute('SELECT * FROM Countries')
     return {"countries": dict_cursor.fetchall()}
 
+@app.get('/Cust_ContactTable')
+def cust_contacttable():
+    dict_cursor.execute('SELECT * FROM Customer_Contact')
+    return {"Customer_Contact": dict_cursor.fetchall()}
+
+@app.get('/Emp_ContactTable')
+def cust_contacttable():
+    dict_cursor.execute('SELECT * FROM Employee_Contact')
+    return {"Employee_Contact": dict_cursor.fetchall()}
+
 class AdminLogin(BaseModel):
     username: str
     password: str
@@ -160,7 +170,16 @@ def employee_login(admin_login:AdminLogin):
         return {"authorized": True}
     else:
         return {"authorized": False}
-
+@app.post('/admin_options')
+def employee_login(admin_login:AdminLogin):
+    #change later
+    query = '''SELECT * FROM Admin_Login WHERE username = %s AND password = %s'''
+    cursor.execute(query, (admin_login.username, admin_login.password))
+    exist = cursor.fetchone()
+    if exist:
+        return {"authorized": True}
+    else:
+        return {"authorized": False}
 
 if __name__ == "__main__":
     #Uvicorn is a python library used to easily test endpoints. When you run this, you can visit localhost:5001/docs, and see and test all the endpoints
